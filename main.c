@@ -3,8 +3,8 @@
 #define MAX 50
 #define STMAX 69
 #define schoolName "NIELIT"
-#define DATABASEFILENAME "StudentRawData.txt"
-#define SESSION_FILENAME "SessionLog.txt"
+#define DATABASEFILENAME ".StudentRawData.txt"
+#define SESSION_FILENAME ".SessionLog.txt"
 #define NULL_TXT "(null)"
 int opt = -1;
 /* Session Related Timing */
