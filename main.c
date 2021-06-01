@@ -655,11 +655,17 @@ L19:
     fclose(sessionsFile);
     printf(" Until Log Out\n");
     printf("\nPlease Select your option :\n");
-    printf("0. Back\n1. Refresh");
+    printf("0. Back\n1. Refresh\n2. Delete All Logs");
     printf("\n\n-> ");
     scanf("%d", &opt);
     if (opt == 0)
         return;
+    if (opt == 2)
+    {
+        sessionsFile = fopen(SESSION_FILENAME, "w");
+        fprintf(sessionsFile, " ");
+        fclose(sessionsFile);
+    }
     goto L19;
 }
 
@@ -710,7 +716,7 @@ void updateDataBase(student data[], int dataCount)
     fprintf(dataBase, "\n]");
 }
 
-void d_programs()
+void d_program()
 {
     student stData[STMAX];
     int stDataCount = 0;
@@ -734,8 +740,16 @@ void d_programs()
     stDataCount = initializeDataBase(stData);
     option = 0;
     /* Session Initialize */
+L_CheckSESSION:
     if (!checkFileTXT(SESSION_FILENAME))
         createFileTXT(SESSION_FILENAME);
+    sessionsFile = fopen(SESSION_FILENAME, "r");
+    if (fgetc(sessionsFile) == ' ')
+    {
+        remove(SESSION_FILENAME);
+        goto L_CheckSESSION;
+    }
+    fclose(sessionsFile);
     sessionsFile = fopen(SESSION_FILENAME, "a");
     if (checkSESSIONContents(SESSION_FILENAME))
         fprintf(sessionsFile, "\n");
@@ -781,7 +795,13 @@ L1:
 L2:
     updateDataBase(stData, stDataCount);
     printf("\n\n-----------------\nSession Ended !");
-    sessionsFile = fopen(SESSION_FILENAME, "a");
-    fprintf(sessionsFile, " [ %s ]\n", getDateTimeNow());
+    sessionsFile = fopen(SESSION_FILENAME, "r");
+    if (fgetc(sessionsFile) != ' ')
+    {
+        FILE *_SSFile = NULL;
+        _SSFile = fopen(SESSION_FILENAME, "a");
+        fprintf(_SSFile, " [ %s ]\n", getDateTimeNow());
+        fclose(_SSFile);
+    }
     fclose(sessionsFile);
 }
