@@ -637,7 +637,6 @@ L18:
         goto L17;
 }
 
-
 void showSessionLogs()
 {
     char showLogString;
